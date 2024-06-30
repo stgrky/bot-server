@@ -12,7 +12,7 @@ app.post("/webhook", async (req, res) => {
   console.log("Request body:", req.body); // Log the request body for inspection
 
   // Extract the user input from the 'text' field in the request body
-  const userInput = req.body.text || "No user input available"; // Adjusted to get text directly
+  const userInput = req.body.text || "No user input available";
   console.log("User Input:", userInput);
 
   // Define the Google Chat webhook URL
@@ -23,7 +23,7 @@ app.post("/webhook", async (req, res) => {
     // Send the message to Google Chat
     await axios.post(
       chatWebhookUrl,
-      { text: `Live Agent: ${userInput}` },
+      { text: `End-User: ${userInput}` },
       {
         headers: { "Content-Type": "application/json; charset=UTF-8" },
       }
@@ -37,6 +37,11 @@ app.post("/webhook", async (req, res) => {
     console.error("Error sending message to Google Chat:", error);
     res.status(500).send("Error sending message to Google Chat");
   }
+});
+
+app.post("/chat-webhook", (req, res) => {
+  console.log("Google Chat Webhook Request:", req.body); // Log the request body from Google Chat
+  res.send("Received response from Google Chat");
 });
 
 app.listen(port, () => {
